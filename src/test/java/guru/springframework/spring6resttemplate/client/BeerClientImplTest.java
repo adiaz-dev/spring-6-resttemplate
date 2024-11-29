@@ -1,10 +1,11 @@
 package guru.springframework.spring6resttemplate.client;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import guru.springframework.spring6resttemplate.model.BeerDTO;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 @SpringBootTest
 class BeerClientImplTest {
@@ -13,8 +14,15 @@ class BeerClientImplTest {
   private BeerClient beerClient;
 
   @Test
-  void listBeers() {
-    beerClient.listBeers();
+  void listBeersWithName() {
 
+    Page<BeerDTO> restResponse = beerClient.listBeers("ALE", null, null, null, null);
+    assertEquals(636,restResponse.getTotalElements());
+  }
+
+  @Test
+  void listAllBeers() {
+    Page<BeerDTO> restResponse = beerClient.listBeers();
+    assertEquals(2413,restResponse.getTotalElements());
   }
 }
