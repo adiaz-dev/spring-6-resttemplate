@@ -17,8 +17,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 public class BeerClientImpl implements BeerClient {
 
-  private static final String GET_BEER_PATH = "/api/v1/beer";
-  private static final String GET_BEER_BY_ID_PATH = GET_BEER_PATH + "/{beerId}";
+  public static final String GET_BEER_PATH = "/api/v1/beer";
+  public static final String GET_BEER_BY_ID_PATH = GET_BEER_PATH + "/{beerId}";
   private final RestTemplateBuilder restTemplateBuilder;
 
   @Override
@@ -82,7 +82,12 @@ public class BeerClientImpl implements BeerClient {
 
   @Override
   public void deleteBeer(BeerDTO beer) {
+    deleteBeer(beer.getId());
+  }
+
+  @Override
+  public void deleteBeer(UUID beerId) {
     RestTemplate restTemplate = restTemplateBuilder.build();
-    restTemplate.delete(GET_BEER_BY_ID_PATH, beer.getId());
+    restTemplate.delete(GET_BEER_BY_ID_PATH, beerId);
   }
 }

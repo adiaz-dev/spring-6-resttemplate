@@ -18,4 +18,6 @@ public interface BeerClient {
   BeerDTO updateBeer(BeerDTO newBeer);
 
   void deleteBeer(BeerDTO beer);
+
+  void deleteBeer(UUID beerId);
 }
