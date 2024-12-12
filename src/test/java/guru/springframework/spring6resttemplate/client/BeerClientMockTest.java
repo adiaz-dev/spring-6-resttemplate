@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.queryParam;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -81,7 +82,8 @@ class BeerClientMockTest {
   void getBeerById() throws JsonProcessingException{
 
      server.expect(method(HttpMethod.GET))
-        .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, fixedId))
+         .andExpect(header("Authorization", "Basic dXNlcjE6cGFzc3dvcmQ="))
+         .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, fixedId))
         .andRespond(withSuccess(dtoJson, MediaType.APPLICATION_JSON));
 
 
@@ -102,6 +104,7 @@ class BeerClientMockTest {
     //mock the interaction with the server
     server.expect(method(HttpMethod.GET))
         .andExpect(requestTo(uri))
+        .andExpect(header("Authorization", "Basic dXNlcjE6cGFzc3dvcmQ="))
         .andExpect(queryParam("beerName", "ALE"))
         .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
 
@@ -115,6 +118,7 @@ class BeerClientMockTest {
     String payload = objectMapper.writeValueAsString(getPage());
 
     server.expect(method(HttpMethod.GET))
+        .andExpect(header("Authorization", "Basic dXNlcjE6cGFzc3dvcmQ="))
         .andExpect(requestTo(URL + BeerClientImpl.GET_BEER_PATH))
         .andRespond(withSuccess(payload, MediaType.APPLICATION_JSON));
     Page<BeerDTO> restResponse = beerClient.listBeers();
@@ -127,6 +131,7 @@ class BeerClientMockTest {
 
     //mock a response which will responde 201 with the location header
     server.expect(method(HttpMethod.POST))
+        .andExpect(header("Authorization", "Basic dXNlcjE6cGFzc3dvcmQ="))
         .andExpect(requestTo(URL + BeerClientImpl.GET_BEER_PATH))
         .andRespond(withAccepted().location(uri));
 
@@ -143,6 +148,7 @@ class BeerClientMockTest {
 
   private void mockGetOperation() {
     server.expect(method(HttpMethod.GET))
+        .andExpect(header("Authorization", "Basic dXNlcjE6cGFzc3dvcmQ="))
         .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, dto.getId()))
         .andRespond(withSuccess(dtoJson, MediaType.APPLICATION_JSON));
   }
@@ -152,6 +158,7 @@ class BeerClientMockTest {
 
     //mock a response which will respond 202 (No content)
     server.expect(method(HttpMethod.PUT))
+        .andExpect(header("Authorization", "Basic dXNlcjE6cGFzc3dvcmQ="))
         .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, dto.getId()))
         .andRespond(withNoContent());
 
@@ -168,6 +175,7 @@ class BeerClientMockTest {
 
     //as we have to emulate that not found is returned, then we mock that response
     server.expect(method(HttpMethod.DELETE))
+        .andExpect(header("Authorization", "Basic dXNlcjE6cGFzc3dvcmQ="))
         .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, dto.getId()))
         .andRespond(withResourceNotFound());
 
@@ -184,6 +192,7 @@ class BeerClientMockTest {
 
     //mock a response which will respond 202 (No content)
     server.expect(method(HttpMethod.DELETE))
+        .andExpect(header("Authorization", "Basic dXNlcjE6cGFzc3dvcmQ="))
         .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, dto.getId()))
         .andRespond(withNoContent());
 
